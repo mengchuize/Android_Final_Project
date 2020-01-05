@@ -1,0 +1,75 @@
+import con_db
+import os
+from flask import Flask, Response
+from flask import request
+
+app=Flask(__name__)
+
+upload_file_folder = os.path.join(os.getcwd(),'upload')
+print(upload_file_folder)
+
+@app.route('/')
+def getPage():
+        return 'please add Users,Photo,Video or behind /'
+
+@app.route('/Users',methods=['GET','POST'])
+def getUsers():
+    if request.method=='GET':
+        return con_db.getdbuser()
+    if request.method=='POST':
+
+        file=request.files['file']
+        pic_name=file.filename
+        file.save(os.path.join(upload_file_folder,pic_name))
+
+        return 'User上传成功'
+
+@app.route('/Photo',methods=['GET','POST'])
+def getPhoto():
+    if request.method=='GET':
+        return con_db.getdbphoto()
+    if request.method == 'POST':
+        file = request.files['file']
+        pic_name = file.filename
+        file.save(os.path.join(upload_file_folder, pic_name))
+
+        return 'Photo上传成功'
+
+@app.route('/Image001.png',methods=['GET','POST'])
+def getImage001():
+    if request.method=='GET':
+        with open("F:\\WebServer\\AndroidWebServer\\Images\\image001.png", 'rb') as f:
+            image = f.read()
+        return Response(image, mimetype="image/jpeg")
+
+@app.route('/Image002.png',methods=['GET','POST'])
+def getImage002():
+    if request.method == 'GET':
+        with open("F:\\WebServer\\AndroidWebServer\\Images\\image002.png", 'rb') as f:
+            image = f.read()
+        return Response(image, mimetype="image/jpeg")
+
+
+@app.route('/Image003.png',methods=['GET','POST'])
+def getImage003():
+    if request.method == 'GET':
+        with open("F:\\WebServer\\AndroidWebServer\\Images\\image003.png", 'rb') as f:
+            image = f.read()
+        return Response(image, mimetype="image/jpeg")
+
+
+@app.route('/Video',methods=['GET','POST'])
+def getvideopath():
+    if request.method=='GET':
+        return con_db.getdbvideo()
+    if request.method == 'POST':
+        file = request.files['file']
+        pic_name = file.filename
+        file.save(os.path.join(upload_file_folder, pic_name))
+
+        return 'Video上传成功'
+
+if __name__=='__main__':
+    print('WebServer Start>>>>>>>>>')
+    app.run(host='0.0.0.0',port=5566)
+    #app.run(port=5566)
